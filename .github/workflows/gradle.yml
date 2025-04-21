@@ -57,7 +57,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags:  ${{ secrets.DOCKER_USERNAME }}/web-app:${{ github.ref_name }}
+        tags:  ${{ secrets.DOCKER_USERNAME }}/web-app:0.0.1
         # git tag v1.0.0
         # git push origin v1.0.0
         # git push origin main
@@ -75,8 +75,8 @@ jobs:
     - name: Deploy on EC2 via SSH
       run: |
         ssh -o StrictHostKeyChecking=no -i key.pem ${{ secrets.EC2_HOST }} << 'EOF'
-          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/web-app:${{ github.ref_name }}
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/web-app:0.0.1
           sudo docker stop web-app || true
           sudo docker rm web-app || true
-          docker run -d -p 80:80 --name web-app  ${{ secrets.DOCKER_USERNAME }}/web-app:${{ github.ref_name }}
+          docker run -d -p 80:80 --name web-app  ${{ secrets.DOCKER_USERNAME }}/web-app:0.0.1
         EOF
