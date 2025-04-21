@@ -24,7 +24,7 @@ jobs:
     - name: make application-deploy.yml
       run: |
         cd ./src/main/resources
-        touch ./application-prod.yml
+        touch ./application-deploy.yml
         echo "${{ secrets.DEPOLY_YAML }}" > ./application-deploy.yaml
 
     - name: Setup Gradle
@@ -36,7 +36,8 @@ jobs:
       
     - name: Build JAR
       run: sudo ./gradlew bootJar -x test
-
+    - name: 디렉토리 구조 확인
+      run: ls -R
     - name: Check JAR exists
       run: ls -alh build/libs
 
@@ -59,10 +60,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags:  ${{ secrets.DOCKER_USERNAME }}/web-app:0.0.1
-        # git tag v1.0.0
-        # git push origin v1.0.0
-        # git push origin main
+        tags: ${{ secrets.DOCKER_USERNAME }}/web-app:0.0.1
         platforms: linux/amd64
   deploy:
     needs: docker
