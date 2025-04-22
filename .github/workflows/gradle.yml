@@ -21,12 +21,16 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         
-    - name: make application-deploy.yaml
+    - name: make env.properties
       run: |
         cd ./src/main/resources
-        touch ./application-deploy.yaml
-        echo "${{ secrets.DEPOLY_YAML }}" > ./application-deploy.yaml
-
+        touch ./env.properties
+        echo "mysql.url="${{ secrets.MYSQL_URL }}" >> ./env.properties
+        echo "mysql.user=${{ secrets.MYSQL_USER }}" >> ./env.properties
+        echo "mysql.password=${{ secrets.MYSQL_PASSWORD }}" >> ./env.properties
+#mysql.url="jdbc:mysql://localhost:3306/employees"
+      #mysql.user=root
+      #mysql.password=mysqlmysql
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
       with:
@@ -41,31 +45,10 @@ jobs:
     - name: Check JAR exists
       run: ls -alh build/libs
 
-#  docker:
-#    needs: build
-#    runs-on: ubuntu-latest
-#    steps:
-#    - uses: actions/checkout@v4
-#    - name: Login to Docker Hub
-#      uses: docker/login-action@v3
-#      with:
-#        username: ${{ secrets.DOCKER_USERNAME }}
-#        password: ${{ secrets.DOCKER_PASSWORD }}
-#
-#    - name: Build and Push Docker Image
-#      uses: docker/build-push-action@v5
-#      with:
-#        context: .
-#        file: ./Dockerfile
-#        push: true
-#        tags: ${{ secrets.DOCKER_USERNAME }}/web-app:0.0.1
-#        platforms: linux/amd64
-
-#  deploy:
-#    needs: docker
-#    runs-on: ubuntu-latest
-#
-#    steps:
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
     - name: Docker build
       run: |
         # Docker Hub 로그인

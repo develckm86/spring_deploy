@@ -1,6 +1,5 @@
-src/main/resources/application-dev_db.yaml
-src/main/resources/application-deploy.yaml
-
+# git rm --cached -f src/main/resources/env.properties
+src/main/resources/env.properties
 HELP.md
 .gradle
 #build/
