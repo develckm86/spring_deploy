@@ -25,12 +25,9 @@ jobs:
       run: |
         cd ./src/main/resources
         touch ./env.properties
-        echo "mysql.url="${{ secrets.MYSQL_URL }}" >> ./env.properties
-        echo "mysql.user=${{ secrets.MYSQL_USER }}" >> ./env.properties
-        echo "mysql.password=${{ secrets.MYSQL_PASSWORD }}" >> ./env.properties
-#mysql.url="jdbc:mysql://localhost:3306/employees"
-      #mysql.user=root
-      #mysql.password=mysqlmysql
+        echo "mysql.url=${{secrets.MYSQL_URL }}" >> ./env.properties
+        echo "mysql.user=${{secrets.MYSQL_USER }}" >> ./env.properties
+        echo "mysql.password=${{secrets.MYSQL_PASSWORD}}" >> ./env.properties
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
       with:
