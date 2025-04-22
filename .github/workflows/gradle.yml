@@ -28,6 +28,7 @@ jobs:
         echo "mysql.url=${{secrets.MYSQL_URL }}" >> ./env.properties
         echo "mysql.user=${{secrets.MYSQL_USER }}" >> ./env.properties
         echo "mysql.password=${{secrets.MYSQL_PASSWORD}}" >> ./env.properties
+
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
       with:
@@ -42,10 +43,10 @@ jobs:
     - name: Check JAR exists
       run: ls -alh build/libs
 
-  docker:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
+#  docker:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
     - name: Docker build
       run: |
         # Docker Hub 로그인
